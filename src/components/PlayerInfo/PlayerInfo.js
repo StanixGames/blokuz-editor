@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { PLAYER_ONE, PLAYER_TWO } from '../../const';
-import { rotateFigure, flipX, flipY } from '../../utils/Figures';
+import { rotateFigure, flipX, flipY } from '../../utils/Figure';
 import game from '../../store/ducks/game';
 import FigureControlButton from '../../UI/FigureControlButton';
 import Figure from '../Figure';
@@ -71,9 +71,15 @@ function PlayerInfo(props) {
               )}
             </PreviewFigure>
             <PrevieControlButtonsContainer>
-              <FigureControlButton onClick={rotateHandler}>Rotate</FigureControlButton>
-              <FigureControlButton onClick={flipXHandler}>Flip X</FigureControlButton>
-              <FigureControlButton onClick={flipYHandler}>Flip Y</FigureControlButton>
+              <FigureControlButton onClick={rotateHandler}>
+                Rotate
+              </FigureControlButton>
+              <FigureControlButton onClick={flipXHandler}>
+                Flip X
+              </FigureControlButton>
+              <FigureControlButton onClick={flipYHandler}>
+                Flip Y
+              </FigureControlButton>
             </PrevieControlButtonsContainer>
           </>
         )}

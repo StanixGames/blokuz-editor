@@ -1,4 +1,4 @@
-import { generateInitFigures } from '../../utils/Figures';
+import { generateInitFigures } from '../../utils/Figure';
 import { PLAYER_ONE, PLAYER_TWO } from '../../const';
 
 const types = {

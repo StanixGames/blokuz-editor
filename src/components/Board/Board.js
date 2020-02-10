@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 function calculateSizes(setBoardSize, setCellSize) {
@@ -15,44 +16,76 @@ function calculateSizes(setBoardSize, setCellSize) {
 
   setBoardSize(boardSize - 20);
   setCellSize(cellSize);
+
+  return cellSize;
 }
 
-function renderCells(size) {
-  const cells = [];
-  
-  for (let i = 0; i < 14*14; i += 1) {
-    let color = null;
-
-    cells.push(
-      <Cell size={size} color={color} />
-    );
-  }
-  return cells; 
+function renderCells(cells, size) {
+  return cells.map((row) => {
+    return row.map((color) => {
+      return (
+        <Cell size={size} color={color} />
+      );
+    });
+  });
 }
 
-export default function Board(props) {
-  const { schema, color } = props;
+function Board(props) {
+  const { schema, color, cells } = props;
   const [ boardSize, setBoardSize ] = useState(0);
-  const [ cellSize, setCellSize ] = useState(0);
+  const [ cellSize, setCellSize ] = useState(1);
+
+  const test = useCallback((e) => {
+    const boardElem = document.getElementById('boardCanv');
+    var rect = boardElem.getBoundingClientRect();
+    var x = e.clientX - rect.left; //x position within the element.
+    var y = e.clientY - rect.top;  //y position within the element.
+    const xPad = Math.ceil(x / cellSize);
+    const yPad = Math.ceil(y / cellSize);
+    // console.log(cellSize, xPad, yPad);
+  }, [cellSize]);
 
   useEffect(() => {
-    calculateSizes(setBoardSize, setCellSize);
-
     window.addEventListener('resize', () => {
       calculateSizes(setBoardSize, setCellSize);
     });
 
+    calculateSizes(setBoardSize, setCellSize);
+    
+    const boardElem = document.getElementById('boardCanv');
+    boardElem.addEventListener('mousemove', (e) => {
+      e.preventDefault();
+      test(e);
+    }, true);
+
     return () => {
       window.removeEventListener('resize');
+      boardElem.removeEventListener('mousemove');
     }
   }, []);
 
   return (
     <Wrapper id="boardCanv" size={boardSize}>
-      {renderCells(cellSize)}
+      {renderCells(cells, cellSize)}
     </Wrapper>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    cells: state.board.cells,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Board);
 
 const Wrapper = styled.div`
   display: flex;

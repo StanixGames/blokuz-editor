@@ -1,8 +1,10 @@
 import { createStore, combineReducers, compose } from 'redux';
 import game from './ducks/game';
+import board from './ducks/board';
 
 const reducers = {
   game: game.reducer,
+  board: board.reducer,
 };
 
 const store = createStore(
