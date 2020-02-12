@@ -20,12 +20,12 @@ const initState = {
   player1: {
     name: 'Player 1',
     color: '#5eba1c',
-    figures: generateInitFigures(),
+    figures: generateInitFigures('3'),
   },
   player2: {
     name: 'Player 2',
     color: '#1c95ba',
-    figures: generateInitFigures(),
+    figures: generateInitFigures('2'),
   },
 };
 

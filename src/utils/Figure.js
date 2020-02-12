@@ -29,16 +29,16 @@ const SCHEMAS = [
   "0000000000010001111000000"
 ];
 
-export function generateInitFigures() {
+export function generateInitFigures(playerFigureMask) {
   return SCHEMAS.map((schema) => {
     const blocksCount = schema
         .split('')
-        .filter((atom) => atom === '1')
+        .filter((atom) => atom !== '0')
         .length;
     return {
       type: FIGURE_TYPES[blocksCount - 1],
       id: Math.random(),
-      schema,
+      schema: schema.split('1').join(playerFigureMask),
     }
   });
 }
@@ -86,6 +86,17 @@ export function flipY(schema) {
     b[5], b[6], b[7], b[8], b[9],
     b[0], b[1], b[2], b[3], b[4],
   ].join('');
+}
+
+export function to2DArray(schema) {
+  const b = schema.split('');
+  return [
+    [b[0], b[1], b[2], b[3], b[4]],
+    [b[5], b[6], b[7], b[8], b[9]],
+    [b[10], b[11], b[12], b[13], b[14]],
+    [b[15], b[16], b[17], b[18], b[19]],
+    [b[20], b[21], b[22], b[23], b[24]],
+  ];
 }
 
 export default null;
