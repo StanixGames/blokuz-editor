@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { PLAYER_ONE, PLAYER_TWO } from '../../const';
 import PlayerInfo from '../../components/PlayerInfo';
 import Board from '../../components/Board';
+import engine from '../../engine';
 
 function GameScreen() {
+  useEffect(() => {
+    engine.initGame();
+
+    return () => {
+      engine.destroyGame();
+    }
+  }, []);
+
   return (
     <Wrapper>
       <PlayerPanel>
@@ -13,7 +22,7 @@ function GameScreen() {
         />
       </PlayerPanel>
       <BoardPanel id="board">
-        <Board />
+        {/* <Board /> */}
       </BoardPanel>
       <PlayerPanel>
         <PlayerInfo
@@ -48,4 +57,5 @@ const BoardPanel = styled.div`
   align-items: center;
   margin: 4px;
   background-color: rgba(255,255,255,0.1);
+  border: 1px solid red;
 `;
