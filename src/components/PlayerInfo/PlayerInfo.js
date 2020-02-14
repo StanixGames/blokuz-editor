@@ -2,50 +2,38 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { PLAYER_ONE, PLAYER_TWO } from '../../const';
-import { rotateFigure, flipX, flipY } from '../../utils/Figure';
 import game from '../../store/ducks/game';
 import FigureControlButton from '../../UI/FigureControlButton';
 import Figure from '../Figure';
 
-function getControlHandlerCreator(props) {
-  const { player, activeFigure, setFigureSchema, setActiveFigure } = props;
-  return (controlMethod) => {
-    return useCallback(() => {
-      if (!activeFigure || !controlMethod) {
-        return ;
-      }
-      const updatedSchema = controlMethod(activeFigure.schema);
-      setActiveFigure({
-        ...activeFigure,
-        schema: updatedSchema,
-      });
-      setFigureSchema(player, activeFigure.id, updatedSchema);
-    });
-  }
-}
-
 function PlayerInfo(props) {
-  const { turn, player, activeFigure, setActiveFigure } = props;
+  const {
+    turn,
+    player,
+    activeFigure,
+    setActiveFigure,
+    onFlipX,
+    onFlipY,
+    onRotate,
+  } = props;
+
+  if (!props[PLAYER_ONE] && !props[PLAYER_TWO]) {
+    return null;
+  }
   const playerActive = turn === player;
-  const data = player === PLAYER_ONE ? props.player1 : props.player2;
-  const { name, color, figures } = data || {};
+  const { name, color, figures } = props[player] || {};
   let score = 0;
 
-  const createControlHandler = getControlHandlerCreator(props);
-  const rotateHandler = createControlHandler(rotateFigure);
-  const flipXHandler = createControlHandler(flipX);
-  const flipYHandler = createControlHandler(flipY);
-
   const figureButtons = figures.map((figure) => {
-    const { schema, id } = figure;
-    const selected = playerActive && activeFigure && activeFigure.id === id;
-    const clickHandler = playerActive ? () => setActiveFigure(figure) : null;
+    const selected = playerActive && activeFigure && activeFigure.id === figure.id;
+    const clickHandler = playerActive ? () => setActiveFigure({ ...figure, color }) : null;
 
     return (
       <FigureButton selected={selected}>
         <Figure
+          blockSize={12}
           color={color}
-          schema={schema}
+          figure={figure}
           onClick={clickHandler} 
         />
       </FigureButton>
@@ -60,24 +48,22 @@ function PlayerInfo(props) {
       </Header>
       <FiguresContainer>{figureButtons}</FiguresContainer>
       <PreviewContainer>
-        {playerActive && (
+        {playerActive && activeFigure && (
           <>
-            <PreviewFigure>
+            <PreviewFigure onClick={onRotate}>
               {activeFigure && (
                 <Figure
+                  blockSize={30}
                   color={color}
-                  schema={activeFigure.schema}
+                  figure={activeFigure}
                 />
               )}
             </PreviewFigure>
             <PrevieControlButtonsContainer>
-              <FigureControlButton onClick={rotateHandler}>
-                Rotate
-              </FigureControlButton>
-              <FigureControlButton onClick={flipXHandler}>
+              <FigureControlButton onClick={onFlipX}>
                 Flip X
               </FigureControlButton>
-              <FigureControlButton onClick={flipYHandler}>
+              <FigureControlButton onClick={onFlipY}>
                 Flip Y
               </FigureControlButton>
             </PrevieControlButtonsContainer>
@@ -92,8 +78,8 @@ function mapStateToProps(state) {
   return {
     turn: state.game.turn,
     activeFigure: state.game.activeFigure,
-    player1: state.game.player1,
-    player2: state.game.player2,
+    [PLAYER_ONE]: state.game[PLAYER_ONE],
+    [PLAYER_TWO]: state.game[PLAYER_TWO],
   }
 }
 
@@ -156,6 +142,8 @@ const FigureButton = styled.div`
   max-height: ${buttonSideSize};
   display: flex;
   flex: 1;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0,0,0,0.1);
   margin: 2px;
   border: none;
@@ -165,7 +153,6 @@ const FigureButton = styled.div`
     background-color: rgba(0,0,0,0.4);
   }
   padding: 5px;
-  position: relative;
   box-sizing: border-box;
   ${({ selected }) => selected ? `border: 2px solid #bac72e;` : ''}
 `;
@@ -187,6 +174,8 @@ const PreviewFigure = styled.div`
   max-height: ${previewFigureSize};
   display: flex;
   flex: 1;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0,0,0,0.1);
 `;
 

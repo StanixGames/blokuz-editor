@@ -1,5 +1,7 @@
 class ControlManager {
   engine = null;
+  xPad = -1;
+  yPad = -1;
   
   constructor(engine) {
     this.engine = engine;
@@ -23,14 +25,14 @@ class ControlManager {
     var rect = boardElem.getBoundingClientRect();
     var x = event.clientX - rect.left; //x position within the element.
     var y = event.clientY - rect.top;  //y position within the element.
-    const xPad = Math.ceil(x / boardCellSize);
-    const yPad = Math.ceil(y / boardCellSize);
+    this.xPad = Math.floor(x / boardCellSize);
+    this.yPad = Math.floor(y / boardCellSize);
 
-    this.engine.mouseMove(xPad, yPad);
+    this.engine.mouseMove(this.xPad, this.yPad);
   }
 
   mouseDown = (event) => {
-    console.log(event);
+    this.engine.mouseDown(this.xPad, this.yPad);
   }
   
   destroy = () => {

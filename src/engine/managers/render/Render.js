@@ -77,9 +77,8 @@ class RenderManager {
     this.boardSize = boardSize - 20;
   }
 
-  renderPreviewFigure = (figure, xPad, yPad) => {
-    if (!figure
-      || (this.prevPreviewXPad === xPad && this.prevPreviewYPad === yPad)) {
+  renderPreviewFigure = (figure, xPad, yPad, canPlace) => {
+    if (this.prevPreviewXPad === xPad && this.prevPreviewYPad === yPad) {
       return;
     }
 
@@ -91,7 +90,7 @@ class RenderManager {
     const context = previewElem.getContext("2d");
     const boardCellSize = this.boardSize / this.engine.BOARD_CELLS;
 
-    context.fillStyle = figure.color;
+    context.fillStyle = canPlace ? figure.color : 'red';
     context.clearRect(0, 0, previewElem.width, previewElem.height);
 
     let safeXPad = xPad;
@@ -110,12 +109,49 @@ class RenderManager {
       safeYPad = yPad - ((yPad + figure.bounds.max.y) - this.engine.BOARD_CELLS) - 1;
     }
 
-    figure.schema.forEach((cell) => {
-      const xReal = ((safeXPad + cell.x) * boardCellSize) + 1;
-      const yReal = ((safeYPad + cell.y) * boardCellSize) + 1;
+    figure.blocks.forEach((block) => {
+      const xReal = ((safeXPad + block.x) * boardCellSize) + 1;
+      const yReal = ((safeYPad + block.y) * boardCellSize) + 1;
       const size = boardCellSize - 2;
       context.fillRect(xReal, yReal, size, size);
     });
+  }
+
+  renderFigures = (cells, players) => {
+    if (!cells || !players) {
+      return;
+    }
+
+    const figuresElem = document.getElementById("figures");
+    
+    const context = figuresElem.getContext("2d");
+    const boardCellSize = this.boardSize / this.engine.BOARD_CELLS;
+
+    context.clearRect(0, 0, figuresElem.width, figuresElem.height);
+
+    const colors = new Map();
+    players.forEach((player) => {
+      colors.set(player.mask, player.color);
+    });
+
+    for (let yPad = 0; yPad < this.engine.BOARD_CELLS; yPad += 1) {
+      for (let xPad = 0; xPad < this.engine.BOARD_CELLS; xPad += 1) {
+        const cellMask = cells[xPad][yPad];
+        if (cellMask !== '0') {
+          const x = (xPad * boardCellSize) + 1;
+          const y = (yPad * boardCellSize) + 1;
+          const size = boardCellSize - 2;
+          context.fillStyle = colors.get(cellMask);
+          context.fillRect(x, y, size, size);
+        }
+      } 
+    }
+  }
+
+  clearPreviewFigure = () => {
+    const previewElem = document.getElementById("preview");
+    const context = previewElem.getContext("2d");
+    context.clearRect(0, 0, previewElem.width, previewElem.height);
   }
 
   destroy = () => {

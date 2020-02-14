@@ -5,28 +5,22 @@ const types = {
 };
 
 const actions = {
-  placeFigure: (figure, centerX, centerY) =>
-    ({ type: types.BOARD_PLACE_FIGURE, figure, centerX, centerY }),
+  placeFigure: (figure, padX, padY) =>
+    ({ type: types.BOARD_PLACE_FIGURE, figure, padX, padY }),
 };
 
 const initState = {
   cells: generateInitCells(),
 };
 
-function patchCells(cells, chunk, centerX, centerY) {
+function patchCells(cells, figure, padX, padY) {
   const newCells = cells.map((row) => row.map(it => it));
-  // console.log(chunk);
-  for (let y = 0; y < 5; y += 1) {
-    for (let x = 0; x < 5; x += 1) {
-      const boardX = centerX - 3 + x;
-      const boardY = centerY - 3 + y;
-      //TODO
-      if (chunk[y][x] !== 0 && (boardX < 0 || boardY < 0 || boardX >= 14 || boardY >= 14)) {
-        return;
-      }
-      newCells[boardX][boardY] = chunk[y][x];
-    }
-  }
+
+  figure.blocks.forEach((block) => {
+    const { x, y, mask } = block;
+    newCells[padX + x][padY + y] = mask;
+  });
+
   return newCells;
 }
 
@@ -35,7 +29,7 @@ function reducer(state = initState, action) {
     case types.BOARD_PLACE_FIGURE: {
       return {
         ...state,
-        cells: patchCells(state.cells, action.figure, action.centerX, action.centerY),
+        cells: patchCells(state.cells, action.figure, action.padX, action.padY),
       };
     }
     default:

@@ -3,33 +3,55 @@ const BOARD_SIZE = 14;
 const createEmptyArray = () => new Array(BOARD_SIZE).fill('0');
 
 export function generateInitCells() {
-  return createEmptyArray().map(createEmptyArray);
+  const cells = createEmptyArray().map(createEmptyArray);
+  cells[0][0] = 'a';
+  cells[cells.length - 1][cells[0].length - 1] = 'b';
+  return cells;
 }
 
-export function isCanPlaceOnBoard(cells, schema2D, centerX, centerY) {
-  if (centerX < 3 || centerY < 3 || centerX > BOARD_SIZE - 2 || centerY > BOARD_SIZE - 2) {
+export function isCanPlaceOnBoard(cells, figure, padX, padY) {
+  const getCellSafety = (x, y) => {
+    if (x < 0 || x > cells.length - 1 || y < 0 || y > cells[0].length) {
+      return null;
+    }
+    return cells[x][y];
+  }
+
+  if (padX + figure.bounds.min.x < 0 || padX + figure.bounds.max.x > BOARD_SIZE - 1) {
     return false;
   }
-  for (let y = 0; y < 5; y += 1) {
-    for (let x = 0; x < 5; x += 1) {
-      const boardX = centerX - 3 + x;
-      const boardY = centerY - 3 + y;
-
-      if (cells[boardX][boardY] !== '0' && schema2D[y][x] !== '0') {
-        return false;
-      }
-    }
+  if (padY + figure.bounds.min.y < 0 || padY + figure.bounds.max.y > BOARD_SIZE - 1) {
+    return false;
   }
-  // for (let y = 0; y < 5; y += 1) {
-  //   for (let x = 0; x < 5; x += 1) {
-  //     const boardX = centerX - 2 + x;
-  //     const boardY = centerY - 2 + y;
-  //     if (schema2D[x][y] !== '0' && cells[boardX][boardY] !== '0') {
-  //       return false;
-  //     }
-  //   }
-  // }
-  return true;
+
+  let canPlace = true;
+
+  figure.blocks.forEach((block) => {
+    const { x, y } = block;
+
+    if (getCellSafety(padX + x, padY + y) !== '0') {
+      canPlace = false;
+    }
+  });
+
+  let atLeastOnEdgeConnected = false;
+
+  figure.edges.forEach((edge) => {
+    const { mask, x, y } = figure.blocks[edge.block];
+    
+    edge.vectors.forEach((vector) => {
+      const cell = getCellSafety(padX + x + vector.x, padY + y + vector.y);
+      if (cell === mask) {
+        atLeastOnEdgeConnected = true;
+      }
+    });
+  });
+
+  if (!atLeastOnEdgeConnected) {
+    canPlace = false;
+  }
+
+  return canPlace;
 }
 
 export default null;

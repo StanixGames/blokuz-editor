@@ -1,102 +1,304 @@
-const FIGURE_TYPES = [
-  'MONOMINO',
-  'DOMINO',
-  'TRIMINO',
-  'TETRAMINO',
-  'PENTAMINO',
-];
-
-const SCHEMAS = [
-  "0000000000001000000000000",
-  "0000000000001100000000000",
-  "0000000000011100000000000",
-  "0000000000011000110000000",
-  "0000000100011100000000000",
-  "0000000000111100000000000",
-  "0000000010011100000000000",
-  "0000000110011000000000000",
-  "0000010000111100000000000",
-  "0000000100001000111000000",
-  "0000001000010000111000000",
-  "0000000000011101100000000",
-  "0000000010011100100000000",
-  "0000000100001000010000100",
-  "0000001000011000110000000",
-  "0000000110011000100000000",
-  "0000001100010000110000000",
-  "0000000110011000010000000",
-  "0000000100011100010000000",
-  "0000000000010001111000000"
+const FIGURES = [
+  {
+    bounds: {
+      min: { x: 0, y: 0 },
+      max: { x: 0, y: 0 },
+    },
+    blocks: [
+      { mask: '1', x: 0, y: 0 }
+    ],
+    edges: [
+      {
+        block: 0,
+        vectors: [
+          { x: -1, y: -1 },
+          { x: 1, y: -1 },
+          { x: -1, y: 1 },
+          { x: 1, y: 1 },
+        ]
+      }
+    ],
+  },
+  {
+    bounds: {
+      min: { x: 0, y: 0 },
+      max: { x: 1, y: 0 },
+    },
+    blocks: [
+      { mask: '1', x: 0, y: 0 },
+      { mask: '1', x: 1, y: 0 },
+    ],
+    edges: [
+      {
+        block: 0,
+        vectors: [
+          { x: -1, y: -1 },
+          { x: -1, y: 1 },
+        ]
+      },
+      {
+        block: 1,
+        vectors: [
+          { x: 1, y: -1 },
+          { x: 1, y: 1 },
+        ]
+      }
+    ],
+  },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: 0 },
+  //     max: { x: 1, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: -1, y: 0 },
+  //   ],
+  //   edges: [ 0, 2 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: 0, y: 0 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 1, y: 1 },
+  //     { mask: '1', x: 0, y: 1 },
+  //   ],
+  //   edges: [ 0, 1, 2, 3 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: 0, y: 0 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 1, y: 1 },
+  //   ],
+  //   edges: [ 0, 1, 2 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 0, y: -1 },
+  //   ],
+  //   edges: [ 0, 2, 3 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: 0 },
+  //     max: { x: 2, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 2, y: 0 },
+  //   ],
+  //   edges: [ 0, 3 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 1, y: -1 },
+  //   ],
+  //   edges: [ 0, 2, 3 ],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: -1 },
+  //     { mask: '1', x: 1, y: -1 },
+  //   ],
+  //   edges: [ 0, 1, 2, 3],
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 2, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 2, y: 0 },
+  //     { mask: '1', x: -1, y: -1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 1 },
+  //     { mask: '1', x: 0, y: 1 },
+  //     { mask: '1', x: 1, y: 1 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: -1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: 0, y: 1 },
+  //     { mask: '1', x: 1, y: 1 },
+  //     { mask: '1', x: -1, y: -1 },
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: -1, y: 1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 2, y: 0 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: -1 },
+  //     { mask: '1', x: 1, y: -1 },
+  //     { mask: '1', x: 2, y: -1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 1 },
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 1, y: 0 },
+  //     { mask: '1', x: 1, y: -1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: 0, y: -2 },
+  //     max: { x: 0, y: 2 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: 0, y: -2 },
+  //     { mask: '1', x: 0, y: -1 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: 1 },
+  //     { mask: '1', x: 0, y: 2 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 0, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: -1 },
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: -1, y: 1 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: 1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 1, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: 1 },
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: 0, y: 0 },
+  //     { mask: '1', x: 0, y: -1 },
+  //     { mask: '1', x: 1, y: -1 },
+  //   ]
+  // },
+  // {
+  //   bounds: {
+  //     min: { x: -1, y: -1 },
+  //     max: { x: 0, y: 1 },
+  //   },
+  //   blocks: [
+  //     { mask: '1', x: -1, y: -1 },
+  //     { mask: '1', x: 0, y: -1 },
+  //     { mask: '1', x: -1, y: 0 },
+  //     { mask: '1', x: -1, y: 1 },
+  //     { mask: '1', x: 0, y: 1 },
+  //   ]
+  // },
 ];
 
 export function generateInitFigures(playerFigureMask) {
-  return SCHEMAS.map((schema) => {
-    const blocksCount = schema
-        .split('')
-        .filter((atom) => atom !== '0')
-        .length;
-    return {
-      type: FIGURE_TYPES[blocksCount - 1],
-      id: Math.random(),
-      schema: schema.split('1').join(playerFigureMask),
-    }
-  });
+  return FIGURES.map((figure) => ({
+    ...figure,
+    id: Math.random(),
+    blocks: figure.blocks.map((block) => ({
+      ...block,
+      mask: playerFigureMask,
+    }))
+  }));
 }
 
-export function rotateFigure(schema) {
-  // Example
-  // [1,2,3][4,5,6][7,8,9]
-  // [7,4,1][8,5,2][9,6,3]
+export function rotate(figure) {
+  const blocks = figure.blocks.map((block) => ({
+    ...block,
+    x: block.x * 0 - block.y * 1,
+    y: block.x * 1 + block.y * 0,
+  }));
 
-  const b = schema.split('');
-  return [
-    b[20], b[15], b[10], b[5], b[0],
-    b[21], b[16], b[11], b[6], b[1],
-    b[22], b[17], b[12], b[7], b[2],
-    b[23], b[18], b[13], b[8], b[3],
-    b[24], b[19], b[14], b[9], b[4],
-  ].join('');
+  return {
+    ...figure,
+    blocks,
+  };
 }
 
-export function flipX(schema) {
-  // Example
-  // [1,2,3][4,5,6][7,8,9]
-  // [3,2,1][6,5,4][9,8,7]
+export function flipX(figure) {
+  const blocks = figure.blocks.map((block) => ({
+    ...block,
+    x: -1 * block.x,
+  }));
 
-  const b = schema.split('');
-  return [
-    b[4], b[3], b[2], b[1], b[0],
-    b[9], b[8], b[7], b[6], b[5],
-    b[14], b[13], b[12], b[11], b[10],
-    b[19], b[18], b[17], b[16], b[15],
-    b[24], b[23], b[22], b[21], b[20],
-  ].join('');
+  return {
+    ...figure,
+    blocks,
+  };
 }
 
-export function flipY(schema) {
-  // Example
-  // [1,2,3][4,5,6][7,8,9]
-  // [7,4,1][8,5,2][9,6,3]
+export function flipY(figure) {
+  const blocks = figure.blocks.map((block) => ({
+    ...block,
+    y: -1 * block.y,
+  }));
 
-  const b = schema.split('');
-  return [
-    b[20], b[21], b[22], b[23], b[24],
-    b[15], b[16], b[17], b[18], b[19],
-    b[10], b[11], b[12], b[13], b[14],
-    b[5], b[6], b[7], b[8], b[9],
-    b[0], b[1], b[2], b[3], b[4],
-  ].join('');
-}
-
-export function to2DArray(schema) {
-  const b = schema.split('');
-  return [
-    [b[0], b[1], b[2], b[3], b[4]],
-    [b[5], b[6], b[7], b[8], b[9]],
-    [b[10], b[11], b[12], b[13], b[14]],
-    [b[15], b[16], b[17], b[18], b[19]],
-    [b[20], b[21], b[22], b[23], b[24]],
-  ];
+  return {
+    ...figure,
+    blocks,
+  };
 }
 
 export default null;
