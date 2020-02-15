@@ -47,6 +47,17 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY) {
     });
   });
 
+  figure.spaces.forEach((space) => {
+    const { mask, x, y } = figure.blocks[space.block];
+
+    space.vectors.forEach((vector) => {
+      const cell = getCellSafety(padX + x + vector.x, padY + y + vector.y);
+      if (cell === mask) {
+        canPlace = false;
+      }
+    });
+  });
+
   if (!atLeastOnEdgeConnected) {
     canPlace = false;
   }

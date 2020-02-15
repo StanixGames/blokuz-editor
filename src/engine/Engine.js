@@ -1,6 +1,7 @@
 import StoreManager from './managers/store';
 import RenderManager from './managers/render';
 import ControlManager from './managers/control';
+import BoardManager from './managers/board';
 import { isCanPlaceOnBoard } from '../utils/Board';
 
 class Engine {
@@ -9,17 +10,20 @@ class Engine {
   sm = null;
   rm = null;
   cm = null;
+  bm = null;
 
   constructor() {
     this.sm = new StoreManager(this);
     this.rm = new RenderManager(this);
     this.cm = new ControlManager(this);
+    this.bm = new BoardManager(this);
   }
 
   initGame = () => {
     this.sm.init();
     this.rm.init();
     this.cm.init();
+    this.bm.init();
   }
 
   mouseMove = (xPad, yPad) => {
@@ -68,6 +72,7 @@ class Engine {
     this.cm.destroy();
     this.rm.destroy();
     this.sm.destroy();
+    this.bm.destroy();
   }
 }
 

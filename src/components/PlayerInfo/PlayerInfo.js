@@ -56,6 +56,7 @@ function PlayerInfo(props) {
                   blockSize={30}
                   color={color}
                   figure={activeFigure}
+                  debug
                 />
               )}
             </PreviewFigure>

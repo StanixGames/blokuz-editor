@@ -19,6 +19,7 @@ const ActionButton = styled.div`
     background-color: rgba(255,255,255,0.4);
     transition: 0.2s;
   }
+  margin-bottom: 10px;
 `;
 
 export default ActionButton;

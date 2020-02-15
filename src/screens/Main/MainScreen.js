@@ -5,13 +5,23 @@ import ActionButton from '../../UI/ActionButton';
 
 export default function MainScreen() {
   const history = useHistory();
-  const startGameHandler = () => history.push('/game');
+  const startGameHandler = useCallback(
+    () => history.push('/game'),
+    [ history ]
+  );
+  const editorHandler = useCallback(
+    () => history.push('/editor'),
+    [ history ]
+  );
 
   return (
     <Wrapper>
       <LogoLabel>BlokuZ</LogoLabel>
       <ActionButton onClick={startGameHandler}>
         Start Game
+      </ActionButton>
+      <ActionButton onClick={editorHandler}>
+        Editor
       </ActionButton>
     </Wrapper>
   );

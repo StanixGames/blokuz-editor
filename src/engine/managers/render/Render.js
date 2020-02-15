@@ -90,7 +90,7 @@ class RenderManager {
     const context = previewElem.getContext("2d");
     const boardCellSize = this.boardSize / this.engine.BOARD_CELLS;
 
-    context.fillStyle = canPlace ? figure.color : 'red';
+    context.fillStyle = canPlace ? figure.color : 'rgba(0,0,0,0.2)';
     context.clearRect(0, 0, previewElem.width, previewElem.height);
 
     let safeXPad = xPad;

@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import MainScreen from './screens/Main';
 import GameScreen from './screens/Game';
+import EditorScreen from './screens/Editor';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
         <Switch>
           <Route exact path="/game">
             <GameScreen />
+          </Route>
+          <Route exact path="/editor">
+            <EditorScreen />
           </Route>
           <Route exact path="/">
             <MainScreen />

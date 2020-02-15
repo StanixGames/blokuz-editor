@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function renderCells(figure, color, w, h) {
+function renderCells(figure, color, w, h, debug) {
   const offsetX = Math.abs(figure.bounds.min.x);
   const offsetY = Math.abs(figure.bounds.min.y);
 
-  return figure.blocks.map((block) => {
+  const chains = [];
+  const blocks = figure.blocks.map((block) => {
     return (
       <Cell
         color={color}
@@ -16,16 +17,49 @@ function renderCells(figure, color, w, h) {
       />
     );
   });
+
+  if (debug) {
+    figure.edges.forEach((edge) => {
+      const block = figure.blocks[edge.block];
+      edge.vectors.forEach((vector) => {
+        chains.push(
+          <Cell
+            color="rgba(255,0,0,0.2)"
+            x={offsetX + block.x + vector.x}
+            y={offsetY + block.y + vector.y}
+            w={w}
+            h={h}
+          />
+        );
+      });
+    });
+    figure.spaces.forEach((space) => {
+      const block = figure.blocks[space.block];
+      space.vectors.forEach((vector) => {
+        chains.push(
+          <Cell
+            color="rgba(0,255,0,0.2)"
+            x={offsetX + block.x + vector.x}
+            y={offsetY + block.y + vector.y}
+            w={w}
+            h={h}
+          />
+        );
+      });
+    });
+  }
+
+  return [...blocks, ...chains];
 }
 
 export default function Figure(props) {
-  const { figure, color, blockSize, onClick } = props;
+  const { figure, color, blockSize, onClick, debug } = props;
   const w = Math.abs(figure.bounds.min.x) + Math.abs(figure.bounds.max.x) + 1;
   const h = Math.abs(figure.bounds.min.y) + Math.abs(figure.bounds.max.y) + 1;
 
   return (
     <Wrapper w={w} h={h} blockSize={blockSize} onClick={onClick}>
-      {renderCells(figure, color, w, h)}
+      {renderCells(figure, color, w, h, debug)}
     </Wrapper>
   );
 }
