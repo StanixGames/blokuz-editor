@@ -35,13 +35,13 @@ class RenderManager {
     containerElem.style.backgroundColor = '#F3F3F3';
     boardElem.appendChild(containerElem);
 
-    // Figures
-    const figuresElem = createCanvas('figures', this.boardSize);
-    containerElem.appendChild(figuresElem);
-
     // Grid
     const gridElem = createCanvas('grid', this.boardSize);
     containerElem.appendChild(gridElem);
+
+    // Figures
+    const figuresElem = createCanvas('figures', this.boardSize);
+    containerElem.appendChild(figuresElem);
 
     const gridCtx = gridElem.getContext("2d");
     const cellSize = this.boardSize / this.engine.BOARD_CELLS;
@@ -134,15 +134,23 @@ class RenderManager {
       colors.set(player.mask, player.color);
     });
 
+    const innerBlockPadding = boardCellSize / 8;
     for (let yPad = 0; yPad < this.engine.BOARD_CELLS; yPad += 1) {
       for (let xPad = 0; xPad < this.engine.BOARD_CELLS; xPad += 1) {
         const cellMask = cells[xPad][yPad];
         if (cellMask !== '0') {
-          const x = (xPad * boardCellSize) + 1;
-          const y = (yPad * boardCellSize) + 1;
-          const size = boardCellSize - 2;
+          const x = (xPad * boardCellSize);
+          const y = (yPad * boardCellSize);
+          const size = boardCellSize;
           context.fillStyle = colors.get(cellMask);
           context.fillRect(x, y, size, size);
+          context.fillStyle = 'rgba(0,0,0,0.3)';
+          context.fillRect(
+            x + innerBlockPadding,
+            y + innerBlockPadding,
+            boardCellSize - innerBlockPadding * 2,
+            boardCellSize - innerBlockPadding * 2
+          );
         }
       } 
     }

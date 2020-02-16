@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 function renderFigure(elemId, figure, color, size, cellsCount, debug, withGrid) {
-  const offset = 3;
+  const offset = 2;
   const padding = size / 10;
   const canvasElem = document.getElementById(elemId);
   const context = canvasElem.getContext("2d");
@@ -14,11 +14,18 @@ function renderFigure(elemId, figure, color, size, cellsCount, debug, withGrid) 
     if (!blocks) {
       return;
     }
-    context.fillStyle = color;
+    const innerBlockPadding = cellSize / 10;
     blocks.forEach((block) => {
       const xReal = ((offset + block.x) * cellSize) + padding + 1;
       const yReal = ((offset + block.y) * cellSize) + padding + 1;
+      context.fillStyle = color;
       context.fillRect(xReal, yReal, cellSize - 2, cellSize - 2);
+      context.fillStyle = 'rgba(0,0,0,0.3)'
+      context.fillRect(
+        xReal + innerBlockPadding,
+        yReal + innerBlockPadding,
+        cellSize - innerBlockPadding * 2 - 2,
+        cellSize - innerBlockPadding * 2 - 2);
     });
     
     // context.fillStyle = 'black';
@@ -39,17 +46,17 @@ function renderFigure(elemId, figure, color, size, cellsCount, debug, withGrid) 
     // }
   };
 
-  if (withGrid) {
-    for (let x = cellSize - 4; x <= size; x += cellSize) {
-      context.moveTo(x, 0);
-      context.lineTo(x, size);
+  // if (withGrid) {
+  //   for (let x = cellSize - 4; x <= size; x += cellSize) {
+  //     context.moveTo(x, 0);
+  //     context.lineTo(x, size);
   
-      context.moveTo(0, x);
-      context.lineTo(size, x);
-    }
-    context.strokeStyle = "#9E9E9E";
-    context.stroke();
-  }
+  //     context.moveTo(0, x);
+  //     context.lineTo(size, x);
+  //   }
+  //   context.strokeStyle = "#9E9E9E";
+  //   context.stroke();
+  // }
 
   renderBlocks(figure.blocks, color);
   if (debug) {
@@ -60,7 +67,7 @@ function renderFigure(elemId, figure, color, size, cellsCount, debug, withGrid) 
 
 export default function Figure(props) {
   const { id, figure, color, size, debug, withGrid } = props;
-  const cellsCount = 7;
+  const cellsCount = 5;
 
   useEffect(
     () => renderFigure(id, figure, color, size, cellsCount, debug, withGrid),

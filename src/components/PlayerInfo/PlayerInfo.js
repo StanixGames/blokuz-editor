@@ -22,7 +22,7 @@ function PlayerInfo(props) {
   }
   const playerActive = turn === player;
   const { name, color, score, figures } = props[player] || {};
-  const buttonSize = 100;
+  const buttonSize = 50;
 
   const figureButtons = figures.map((figure) => {
     const figurePlaced = figure.blocks.length === 0;
@@ -59,12 +59,12 @@ function PlayerInfo(props) {
       <PreviewContainer>
         {playerActive && activeFigure && (
           <>
-            <PreviewFigure onClick={onRotate} size={300}>
+            <PreviewFigure size={300}>
               {activeFigure && (
-                <PreviewFigureContainer>
+                <PreviewFigureContainer onClick={onRotate}>
                   <Figure
                     id="figure-preview"
-                    size={300}
+                    size={150}
                     color={color}
                     figure={activeFigure}
                     withGrid
@@ -182,7 +182,6 @@ const FigureButton = styled.div`
 
 const PreviewContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -198,7 +197,7 @@ const PreviewFigure = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 `;
 
 const PrevieControlButtonsContainer = styled.div`
@@ -207,9 +206,10 @@ const PrevieControlButtonsContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 
 const PreviewFigureContainer = styled.div`
   background-color: #7C7C7C;
+  cursor: pointer;
 `;

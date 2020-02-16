@@ -26,6 +26,10 @@ class Engine {
     this.rm.init();
     this.cm.init();
     this.bm.init();
+
+    const cells = this.sm.getCells();
+    const players = this.sm.getPlayers();
+    this.rm.renderFigures(cells, players);
   }
 
   mouseMove = (xPad, yPad) => {

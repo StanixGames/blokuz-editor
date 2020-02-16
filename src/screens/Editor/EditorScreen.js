@@ -92,6 +92,7 @@ const LeftPanel = styled.div`
   flex: 1;
   flex-direction: column;
   margin: 4px;
+  max-width: 500px;
 `;
 
 const BoardPanel = styled.div`
