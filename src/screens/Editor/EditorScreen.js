@@ -6,14 +6,17 @@ import Instrument from './components/Instrument';
 
 export default function EditorScreen() {
   const [ mode, setMode ] = useState(null);
+  // const cellsState = useState(initCells);
   
   const setEditMode = useCallback((mode) => {
     setMode(mode);
     editor.setMode(mode);
+    // editor.setCellsState(cellsState);
   }, [ setMode ]);
 
   useEffect(() => {
     editor.init();
+    // editor.setCellsState(cellsState);
     setEditMode(editor.MODE_DRAW);
 
     return () => {
@@ -32,6 +35,10 @@ export default function EditorScreen() {
     () => setEditMode(editor.MODE_SPACE),
     [ setMode ]
   );
+  const startClearModeHandler = useCallback(
+    () => setEditMode(editor.MODE_CLEAR),
+    [ setMode ]
+  );
 
   return (
     <Wrapper>
@@ -39,23 +46,32 @@ export default function EditorScreen() {
         <Section>
           <TitleLabel>Instruments</TitleLabel>
         </Section>
-          <InstrumentsContainer>
-            <Instrument
-              color="blue"
-              onClick={startDrawModeHandler}
-              selected={mode === editor.MODE_DRAW}
-            />
-            <Instrument
-              color="rgba(0,255,0,0.4)"
-              onClick={startChainModeHandler}
-              selected={mode === editor.MODE_CHAIN}
-            />
-            <Instrument
-              color="rgba(255,0,0,0.4)"
-              onClick={startSpaceModeHandler}
-              selected={mode === editor.MODE_SPACE}
-            />
-          </InstrumentsContainer>
+        <InstrumentsContainer>
+          <Instrument
+            color="blue"
+            onClick={startDrawModeHandler}
+            selected={mode === editor.MODE_DRAW}
+          />
+          <Instrument
+            color="rgba(0,255,0,0.4)"
+            onClick={startChainModeHandler}
+            selected={mode === editor.MODE_CHAIN}
+          />
+          <Instrument
+            color="rgba(255,0,0,0.4)"
+            onClick={startSpaceModeHandler}
+            selected={mode === editor.MODE_SPACE}
+          />
+          <Instrument
+            color="rgba(255,255,255,0.8)"
+            onClick={startClearModeHandler}
+            selected={mode === editor.MODE_CLEAR}
+          />
+        </InstrumentsContainer>
+        <Section>
+          <TitleLabel>Figure output</TitleLabel>
+        </Section>
+        <TextArea id="figure-output" />
       </LeftPanel>
       <BoardPanel id="board" />
     </Wrapper>
@@ -109,4 +125,14 @@ const InstrumentsContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding: 0px 10px;
+  margin-bottom: 30px;
+`;
+
+const TextArea = styled.div`
+  background-color: rgba(255,255,255,0.2);
+  margin: 20px;
+  padding: 20px;
+  border: none;
+  overflow: scroll;
+  max-height: 50vh;
 `;

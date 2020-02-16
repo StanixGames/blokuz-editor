@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 function renderCells(figure, color, w, h, debug) {
-  const offsetX = Math.abs(figure.bounds.min.x);
-  const offsetY = Math.abs(figure.bounds.min.y);
+  const offsetX = 0; //Math.abs(figure.bounds.min.x);
+  const offsetY = 0; // Math.abs(figure.bounds.min.y);
 
   const chains = [];
   const blocks = figure.blocks.map((block) => {
@@ -54,9 +54,9 @@ function renderCells(figure, color, w, h, debug) {
 
 export default function Figure(props) {
   const { figure, color, blockSize, onClick, debug } = props;
-  const w = Math.abs(figure.bounds.min.x) + Math.abs(figure.bounds.max.x) + 1;
-  const h = Math.abs(figure.bounds.min.y) + Math.abs(figure.bounds.max.y) + 1;
-
+  const w = 7; // Math.abs(figure.bounds.min.x) + Math.abs(figure.bounds.max.x) + 1;
+  const h = 7; // Math.abs(figure.bounds.min.y) + Math.abs(figure.bounds.max.y) + 1;
+console.log(figure);
   return (
     <Wrapper w={w} h={h} blockSize={blockSize} onClick={onClick}>
       {renderCells(figure, color, w, h, debug)}

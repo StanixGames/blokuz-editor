@@ -17,9 +17,15 @@ class RenderManager {
   boardSize = 100;
   prevPreviewXPad = -1;
   prevPreviewYPad = -1;
+  colors = null;
 
   constructor(editor) {
     this.editor = editor;
+    this.colors = {
+      [editor.BLOCK_TYPE_BODY]: 'blue',
+      [editor.BLOCK_TYPE_CHAIN]: 'green',
+      [editor.BLOCK_TYPE_SPACE]: 'red',
+    };
   }
 
   init = () => {
@@ -95,6 +101,26 @@ class RenderManager {
   renderFigure = (cells) => {
     if (!cells) {
       return;
+    }
+
+    const figureElem = document.getElementById("figure");
+    
+    const context = figureElem.getContext("2d");
+    const boardCellSize = this.boardSize / this.editor.BOARD_CELLS;
+
+    context.clearRect(0, 0, figureElem.width, figureElem.height);
+
+    for (let yPad = 0; yPad < this.editor.BOARD_CELLS; yPad += 1) {
+      for (let xPad = 0; xPad < this.editor.BOARD_CELLS; xPad += 1) {
+        const cell = cells[xPad][yPad];
+        if (cell !== '0') {
+          const x = (xPad * boardCellSize) + 1;
+          const y = (yPad * boardCellSize) + 1;
+          const size = boardCellSize - 2;
+          context.fillStyle = this.colors[cell];
+          context.fillRect(x, y, size, size);
+        }
+      } 
     }
   }
 
