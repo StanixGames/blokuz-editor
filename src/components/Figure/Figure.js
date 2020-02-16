@@ -1,88 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-function renderCells(figure, color, w, h, debug) {
-  const offsetX = 0; //Math.abs(figure.bounds.min.x);
-  const offsetY = 0; // Math.abs(figure.bounds.min.y);
+function renderFigure(elemId, figure, color, size, cellsCount) {
+  const offset = 3;
+  const padding = size / 10;
+  const canvasElem = document.getElementById(elemId);
+  const context = canvasElem.getContext("2d");
+  const cellSize = (size - padding * 2) / cellsCount;
 
-  const chains = [];
-  const blocks = figure.blocks.map((block) => {
-    return (
-      <Cell
-        color={color}
-        x={offsetX + block.x}
-        y={offsetY + block.y}
-        w={w}
-        h={h}
-      />
-    );
-  });
+  context.clearRect(0, 0, canvasElem.width, canvasElem.height);
 
-  if (debug) {
-    figure.edges.forEach((edge) => {
-      const block = figure.blocks[edge.block];
-      edge.vectors.forEach((vector) => {
-        chains.push(
-          <Cell
-            color="rgba(255,0,0,0.2)"
-            x={offsetX + block.x + vector.x}
-            y={offsetY + block.y + vector.y}
-            w={w}
-            h={h}
-          />
-        );
-      });
+  const renderBlocks = (blocks, color) => {
+    context.fillStyle = color;
+    blocks.forEach((block) => {
+      const xReal = ((offset + block.x) * cellSize) + padding + 1;
+      const yReal = ((offset + block.y) * cellSize) + padding + 1;
+      context.fillRect(xReal, yReal, cellSize - 2, cellSize - 2);
     });
-    figure.spaces.forEach((space) => {
-      const block = figure.blocks[space.block];
-      space.vectors.forEach((vector) => {
-        chains.push(
-          <Cell
-            color="rgba(0,255,0,0.2)"
-            x={offsetX + block.x + vector.x}
-            y={offsetY + block.y + vector.y}
-            w={w}
-            h={h}
-          />
-        );
-      });
-    });
-  }
+  };
 
-  return [...blocks, ...chains];
+  renderBlocks(figure.blocks, color);
+  renderBlocks(figure.chains, 'green');
+  renderBlocks(figure.spaces, 'red');
 }
 
 export default function Figure(props) {
-  const { figure, color, blockSize, onClick, debug } = props;
-  const w = 7; // Math.abs(figure.bounds.min.x) + Math.abs(figure.bounds.max.x) + 1;
-  const h = 7; // Math.abs(figure.bounds.min.y) + Math.abs(figure.bounds.max.y) + 1;
-console.log(figure);
+  const { id, figure, color, size } = props;
+  const cellsCount = 7;
+
+  useEffect(
+    () => renderFigure(id, figure, color, size, cellsCount),
+    [ figure ]
+  );
+
   return (
-    <Wrapper w={w} h={h} blockSize={blockSize} onClick={onClick}>
-      {renderCells(figure, color, w, h, debug)}
-    </Wrapper>
+    <Canvas
+      id={id}
+      width={size}height={size}
+    />
   );
 }
 
-const Wrapper = styled.div`
-  display: block;
-  ${({ w, h, blockSize }) => (`
-    width: ${w * blockSize}px;
-    height: ${h * blockSize}px;
-  `)}
-  position: relative;
-`;
-
-const Cell = styled.div`
-  display: block;
-  position: absolute;
-  ${({ x, y, color, w, h }) => (`
-    width: ${100 / w}%;
-    height: ${100 / h}%;
-    background-color: ${color};
-    border: 1px solid rgba(0,0,0,0.4);
-    box-sizing: border-box;
-    left: ${x * 100 / w}%;
-    top: ${y * 100 / h}%;
-  `)}
+const Canvas = styled.canvas`
+  margin: 0;
+  padding: 0;
 `;

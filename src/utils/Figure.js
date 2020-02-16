@@ -1,343 +1,22 @@
 const FIGURES = [
-  {
-    b: "0:-1;1:-1;2:-1",
-    e: "-1:-2;3:-2;-1:0;3:0",
-    s: "0:-2;1:-2;2:-2;-1:-1;3:-1;0:0;1:0;2:0"
-  },
-  {
-    b: "-3:-2;-2:-2;-1:-2;-3:-1;-1:-1;-4:0;-3:0;-1:0;0:0",
-    e: "",
-    s: "",
-  },
-  // {
-  //   bounds: {
-  //     min: { x: 0, y: 0 },
-  //     max: { x: 0, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: 0 }
-  //   ],
-  //   edges: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: -1, y: -1 },
-  //         { x: 1, y: -1 },
-  //         { x: -1, y: 1 },
-  //         { x: 1, y: 1 },
-  //       ],
-  //     }
-  //   ],
-  //   spaces: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //         { x: -1, y: 0 },
-  //         { x: 1, y: 0 },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: 0, y: 0 },
-  //     max: { x: 1, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //   ],
-  //   edges: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: -1, y: -1 },
-  //         { x: -1, y: 1 },
-  //       ]
-  //     },
-  //     {
-  //       block: 1,
-  //       vectors: [
-  //         { x: 1, y: -1 },
-  //         { x: 1, y: 1 },
-  //       ]
-  //     }
-  //   ],
-  //   spaces: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //         { x: -1, y: 0 },
-  //       ],
-  //     },
-  //     {
-  //       block: 1,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //         { x: 1, y: 0 },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: 0 },
-  //     max: { x: 1, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //   ],
-  //   edges: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: -1, y: -1 },
-  //         { x: -1, y: 1 },
-  //       ]
-  //     },
-  //     {
-  //       block: 2,
-  //       vectors: [
-  //         { x: 1, y: -1 },
-  //         { x: 1, y: 1 },
-  //       ]
-  //     },
-  //   ],
-  //   spaces: [
-  //     {
-  //       block: 0,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //         { x: -1, y: 0 },
-  //       ],
-  //     },
-  //     {
-  //       block: 1,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //       ],
-  //     },
-  //     {
-  //       block: 2,
-  //       vectors: [
-  //         { x: 0, y: -1 },
-  //         { x: 0, y: 1 },
-  //         { x: 1, y: 0 },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: 0, y: 0 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 1, y: 1 },
-  //     { mask: '1', x: 0, y: 1 },
-  //   ],
-  //   edges: [ 0, 1, 2, 3 ],
-  //   edges: [],
-  //   spaces: [],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: 0, y: 0 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 1, y: 1 },
-  //   ],
-  //   edges: [ 0, 1, 2 ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 0, y: -1 },
-  //   ],
-  //   edges: [ 0, 2, 3 ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: 0 },
-  //     max: { x: 2, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 2, y: 0 },
-  //   ],
-  //   edges: [ 0, 3 ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 1, y: -1 },
-  //   ],
-  //   edges: [ 0, 2, 3 ],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: -1 },
-  //     { mask: '1', x: 1, y: -1 },
-  //   ],
-  //   edges: [ 0, 1, 2, 3],
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 2, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 2, y: 0 },
-  //     { mask: '1', x: -1, y: -1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 1 },
-  //     { mask: '1', x: 0, y: 1 },
-  //     { mask: '1', x: 1, y: 1 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: -1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: 1 },
-  //     { mask: '1', x: 1, y: 1 },
-  //     { mask: '1', x: -1, y: -1 },
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: -1, y: 1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 2, y: 0 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: -1 },
-  //     { mask: '1', x: 1, y: -1 },
-  //     { mask: '1', x: 2, y: -1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 1 },
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 1, y: 0 },
-  //     { mask: '1', x: 1, y: -1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: 0, y: -2 },
-  //     max: { x: 0, y: 2 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: 0, y: -2 },
-  //     { mask: '1', x: 0, y: -1 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: 1 },
-  //     { mask: '1', x: 0, y: 2 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 0, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: -1 },
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: -1, y: 1 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: 1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 1, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: 1 },
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: 0, y: 0 },
-  //     { mask: '1', x: 0, y: -1 },
-  //     { mask: '1', x: 1, y: -1 },
-  //   ]
-  // },
-  // {
-  //   bounds: {
-  //     min: { x: -1, y: -1 },
-  //     max: { x: 0, y: 1 },
-  //   },
-  //   blocks: [
-  //     { mask: '1', x: -1, y: -1 },
-  //     { mask: '1', x: 0, y: -1 },
-  //     { mask: '1', x: -1, y: 0 },
-  //     { mask: '1', x: -1, y: 1 },
-  //     { mask: '1', x: 0, y: 1 },
-  //   ]
-  // },
+  {"bn":"-1:-1;1:1","b":"0:-1;0:0;-1:1;0:1;1:1","c":"-1:-2;1:-2;-2:0;2:0;-2:2;2:2","s":"0:-2;-1:-1;1:-1;-1:0;1:0;-2:1;2:1;-1:2;0:2;1:2"},
+  {"bn":"-1:0;1:0","b":"-1:0;0:0;1:0","c":"-2:-1;2:-1;-2:1;2:1","s":"-1:-1;0:-1;1:-1;-2:0;2:0;-1:1;0:1;1:1"},
 ];
 
 export function generateFigureFromMatrix(matrix, centerX, centerY) {
   const blocks = [];
-  const edges = [];
+  const chains = [];
   const spaces = [];
+  const bounds = {
+    min: {
+      x: Number.POSITIVE_INFINITY,
+      y: Number.POSITIVE_INFINITY,
+    },
+    max: {
+      x: Number.NEGATIVE_INFINITY,
+      y: Number.NEGATIVE_INFINITY,
+    },
+  };
 
   for (let y = 0; y < matrix.length; y += 1) {
     for (let x = 0; x < matrix[0].length; x += 1) {
@@ -350,8 +29,20 @@ export function generateFigureFromMatrix(matrix, centerX, centerY) {
           x: xx,
           y: yy,
         });
+        if (xx < bounds.min.x) {
+          bounds.min.x = xx;
+        }
+        if (yy < bounds.min.y) {
+          bounds.min.y = yy;
+        }
+        if (xx > bounds.max.x) {
+          bounds.max.x = xx;
+        }
+        if (yy > bounds.max.y) {
+          bounds.max.y = yy;
+        }
       } else if (cell === '2') {
-        edges.push({
+        chains.push({
           x: xx,
           y: yy,
         });
@@ -365,92 +56,80 @@ export function generateFigureFromMatrix(matrix, centerX, centerY) {
   }
 
   return {
+    bn: `${bounds.min.x}:${bounds.min.y};${bounds.max.x}:${bounds.max.y}`,
     b: blocks.map(({ x, y }) => `${x}:${y}`).join(';'),
-    e: edges.map(({ x, y }) => `${x}:${y}`).join(';'),
+    c: chains.map(({ x, y }) => `${x}:${y}`).join(';'),
     s: spaces.map(({ x, y }) => `${x}:${y}`).join(';'),
   };
 }
 
 export function generateInitFigures(playerFigureMask) {
-  return FIGURES.map((figure) => {
-    const blocks = figure.b.split(';').map((block) => {
+  const parseCoordinates = (str) => {
+    return str.split(';').map((block) => {
       const b = block.split(':');
       return {
         x: parseInt(b[0]),
         y: parseInt(b[1]),
-        mask: playerFigureMask,
       };
     });
+  };
+  const parseBounds = (str) => {
+    const blocks = str.split(';');
+    const min = blocks[0].split(':');
+    const max = blocks[1].split(':');
+
+    return {
+      min: {
+        x: parseInt(min[0]),
+        y: parseInt(min[1]),
+      },
+      max: {
+        x: parseInt(max[0]),
+        y: parseInt(max[1]),
+      },
+    }
+  };
+
+  return FIGURES.map((figure) => {
+    const blocks = parseCoordinates(figure.b);
+    const chains = parseCoordinates(figure.c);
+    const spaces = parseCoordinates(figure.s);
+    const bounds = parseBounds(figure.bn);
+
     return {
       id: Math.random(),
+      mask: playerFigureMask,
       blocks,
-      bounds: {
-        min: {
-          x: -2,
-          y: -2,
-        },
-        max: {
-          x: 2,
-          y: 2,
-        },
-      },
-      edges: [],
-      spaces: [],
+      bounds,
+      chains,
+      spaces,
     };
   });
 }
 
 export function rotate(figure) {
+  const rotateCoords = ({ x, y }) => {
+    return { x: -y, y: x }
+  };
+
   const blocks = figure.blocks.map((block) => ({
     ...block,
-    x: block.x * 0 - block.y * 1,
-    y: block.x * 1 + block.y * 0,
+    ...rotateCoords(block)
   }));
 
   const bounds = {
-    min: { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY },
-    max: { x: Number.NEGATIVE_INFINITY, y: Number.NEGATIVE_INFINITY },
-  }
-  blocks.forEach((block) => {
-    if (block.x < bounds.min.x && block.y < bounds.min.y) {
-      bounds.min.x = block.x;
-      bounds.min.y = block.y;
-    }
-    if (block.x > bounds.max.x && block.y > bounds.max.y) {
-      bounds.max.x = block.x;
-      bounds.max.y = block.y;
-    }
-  });
+    min: rotateCoords(figure.bounds.min),
+    max: rotateCoords(figure.bounds.max),
+  };
 
-  const edges = figure.edges.map((edge) => {
-    return {
-      block: edge.block,
-      vectors: edge.vectors.map((vector) => {
-        return {
-          x: vector.x * 0 - vector.y * 1,
-          y: vector.x * 1 - vector.y * 0,
-        };
-      }),
-    };
-  });
-
-  const spaces = figure.spaces.map((space) => {
-    return {
-      block: space.block,
-      vectors: space.vectors.map((vector) => {
-        return {
-          x: vector.x * 0 - vector.y * 1,
-          y: vector.x * 1 - vector.y * 0,
-        };
-      }),
-    };
-  })
+  const chains = figure.chains.map((chain) => rotateCoords(chain));
+  const spaces = figure.spaces.map((space) => rotateCoords(space));
 
   return {
     ...figure,
     bounds,
     blocks,
-    edges,
+    chains,
     spaces,
   };
 }

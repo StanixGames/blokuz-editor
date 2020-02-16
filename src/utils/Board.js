@@ -25,6 +25,7 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY) {
   }
 
   let canPlace = true;
+  const mask = figure.mask;
 
   figure.blocks.forEach((block) => {
     const { x, y } = block;
@@ -36,26 +37,11 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY) {
 
   let atLeastOnEdgeConnected = false;
 
-  figure.edges.forEach((edge) => {
-    const { mask, x, y } = figure.blocks[edge.block];
-    
-    edge.vectors.forEach((vector) => {
-      const cell = getCellSafety(padX + x + vector.x, padY + y + vector.y);
-      if (cell === mask) {
-        atLeastOnEdgeConnected = true;
-      }
-    });
-  });
-
-  figure.spaces.forEach((space) => {
-    const { mask, x, y } = figure.blocks[space.block];
-
-    space.vectors.forEach((vector) => {
-      const cell = getCellSafety(padX + x + vector.x, padY + y + vector.y);
-      if (cell === mask) {
-        canPlace = false;
-      }
-    });
+  figure.chains.forEach((chain) => {
+    const cell = getCellSafety(padX + chain.x, padY + chain.y);
+    if (cell === mask) {
+      atLeastOnEdgeConnected = true;
+    }
   });
 
   if (!atLeastOnEdgeConnected) {

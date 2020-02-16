@@ -23,18 +23,23 @@ function PlayerInfo(props) {
   const playerActive = turn === player;
   const { name, color, figures } = props[player] || {};
   let score = 0;
+  const buttonSize = 100;
 
   const figureButtons = figures.map((figure) => {
     const selected = playerActive && activeFigure && activeFigure.id === figure.id;
     const clickHandler = playerActive ? () => setActiveFigure({ ...figure, color }) : null;
 
     return (
-      <FigureButton selected={selected}>
+      <FigureButton
+        selected={selected}
+        size={buttonSize}
+        onClick={clickHandler} 
+      >
         <Figure
-          blockSize={12}
+          id={`button-${figure.id}`}
+          size={buttonSize}
           color={color}
           figure={figure}
-          onClick={clickHandler} 
         />
       </FigureButton>
     );
@@ -50,10 +55,11 @@ function PlayerInfo(props) {
       <PreviewContainer>
         {playerActive && activeFigure && (
           <>
-            <PreviewFigure onClick={onRotate}>
+            <PreviewFigure onClick={onRotate} size={300}>
               {activeFigure && (
                 <Figure
-                  blockSize={30}
+                  id="figure-preview"
+                  size={300}
                   color={color}
                   figure={activeFigure}
                   debug
@@ -135,16 +141,12 @@ const FiguresContainer = styled.div`
   margin: 10px;
 `;
 
-const buttonSideSize = '9vh';
 const FigureButton = styled.div`
-  min-width: ${buttonSideSize};
-  min-height: ${buttonSideSize};
-  max-width: ${buttonSideSize};
-  max-height: ${buttonSideSize};
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+  ${({ size }) => `
+    width: ${size}px;
+    height: ${size}px;
+  `}
+  display: block;
   background-color: rgba(0,0,0,0.1);
   margin: 2px;
   border: none;
@@ -153,7 +155,7 @@ const FigureButton = styled.div`
   &:hover {
     background-color: rgba(0,0,0,0.4);
   }
-  padding: 5px;
+  padding: 0px;
   box-sizing: border-box;
   ${({ selected }) => selected ? `border: 2px solid #bac72e;` : ''}
 `;
@@ -167,12 +169,11 @@ const PreviewContainer = styled.div`
   margin: 10px;
 `;
 
-const previewFigureSize = '30vh';
 const PreviewFigure = styled.div`
-  min-width: ${previewFigureSize};
-  min-height: ${previewFigureSize};
-  max-width: ${previewFigureSize};
-  max-height: ${previewFigureSize};
+  ${({ size }) => `
+    width: ${size}px;
+    height: ${size}px;
+  `}
   display: flex;
   flex: 1;
   justify-content: center;

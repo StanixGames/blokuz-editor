@@ -43,26 +43,7 @@ class Engine {
       return;
     }
 
-    let nextCells = this.bm.getCells();
-
-    // if (this.mode === this.MODE_CHAIN) {
-    //   if (!this.chainedBlockId) {
-    //     const block = this.bm.getCells()[xPad][yPad];
-    //     this.chainedBlockId = block.id;
-    //   } else {
-    //     const meta = {
-    //       chainedBlockId: this.chainedBlockId,
-    //     };
-    //     this.chainedBlockId = null;
-    //     nextCells = this.bm.placeBlock(xPad, yPad, this.mode, meta);
-    //     this.rm.renderFigure(nextCells);
-    //   }
-    // } else {
-      // }
-      // const offset = Math.floor(this.BOARD_CELLS / 2);
-      // console.log(xPad - offset, yPad - offset);
-
-    nextCells = this.bm.placeBlock(xPad, yPad, this.mode);
+    const nextCells = this.bm.placeBlock(xPad, yPad, this.mode);
     this.rm.renderFigure(nextCells);
     this.printOutput(nextCells, xPad, yPad);
   }
@@ -72,7 +53,7 @@ class Engine {
   }
 
   printOutput = (cells, xPad, yPad) => {
-    const figure = generateFigureFromMatrix(cells, xPad, yPad);
+    const figure = generateFigureFromMatrix(cells, 3, 3);
     const textareaElem = document.getElementById('figure-output');
     textareaElem.innerText = JSON.stringify(figure);
   }
