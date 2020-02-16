@@ -21,26 +21,30 @@ function PlayerInfo(props) {
     return null;
   }
   const playerActive = turn === player;
-  const { name, color, figures } = props[player] || {};
-  let score = 0;
+  const { name, color, score, figures } = props[player] || {};
   const buttonSize = 100;
 
   const figureButtons = figures.map((figure) => {
-    const selected = playerActive && activeFigure && activeFigure.id === figure.id;
-    const clickHandler = playerActive ? () => setActiveFigure({ ...figure, color }) : null;
+    const figurePlaced = figure.blocks.length === 0;
+    const selected = !figurePlaced && playerActive && activeFigure && activeFigure.id === figure.id;
+    const clickHandler = playerActive && !figurePlaced ? () => setActiveFigure({ ...figure, color }) : null;
+    const id = `button-${figure.id}`;
 
     return (
       <FigureButton
+        key={id}
         selected={selected}
         size={buttonSize}
         onClick={clickHandler} 
       >
-        <Figure
-          id={`button-${figure.id}`}
-          size={buttonSize}
-          color={color}
-          figure={figure}
-        />
+        {figure && (
+          <Figure
+            id={id}
+            size={buttonSize}
+            color={color}
+            figure={figure}
+          />
+        )}
       </FigureButton>
     );
   });
@@ -57,15 +61,17 @@ function PlayerInfo(props) {
           <>
             <PreviewFigure onClick={onRotate} size={300}>
               {activeFigure && (
-                <Figure
-                  id="figure-preview"
-                  size={300}
-                  color={color}
-                  figure={activeFigure}
-                  debug
-                />
+                <PreviewFigureContainer>
+                  <Figure
+                    id="figure-preview"
+                    size={300}
+                    color={color}
+                    figure={activeFigure}
+                    withGrid
+                    // debug
+                  />
+                </PreviewFigureContainer>
               )}
-            </PreviewFigure>
             <PrevieControlButtonsContainer>
               <FigureControlButton onClick={onFlipX}>
                 Flip X
@@ -74,9 +80,13 @@ function PlayerInfo(props) {
                 Flip Y
               </FigureControlButton>
             </PrevieControlButtonsContainer>
+            </PreviewFigure>
           </>
         )}
       </PreviewContainer>
+      {!playerActive && (
+        <LockOverlay />
+      )}
     </Wrapper>
   );
 }
@@ -106,10 +116,20 @@ export default connect(
 const Wrapper = styled.div`
   display: flex;
   flex: 1;
-  background-color: ${({ active }) => active ? '#31947f' : '#1b6152'};
+  background-color: #6F6F6F;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  position: relative;
+`;
+
+const LockOverlay = styled.div`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  background-color: rgba(0,0,0,0.6);
 `;
 
 const Header = styled.div`
@@ -147,17 +167,17 @@ const FigureButton = styled.div`
     height: ${size}px;
   `}
   display: block;
-  background-color: rgba(0,0,0,0.1);
+  background-color: #E4E4E4;
   margin: 2px;
   border: none;
   outline: none;
   cursor: pointer;
   &:hover {
-    background-color: rgba(0,0,0,0.4);
+    background-color: #D7D7D7;
   }
   padding: 0px;
   box-sizing: border-box;
-  ${({ selected }) => selected ? `border: 2px solid #bac72e;` : ''}
+  ${({ selected }) => selected ? `border: 4px solid #79EC29;` : ''}
 `;
 
 const PreviewContainer = styled.div`
@@ -176,9 +196,9 @@ const PreviewFigure = styled.div`
   `}
   display: flex;
   flex: 1;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background-color: rgba(0,0,0,0.1);
+  align-items: flex-end;
 `;
 
 const PrevieControlButtonsContainer = styled.div`
@@ -187,4 +207,9 @@ const PrevieControlButtonsContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 15px;
+`;
+
+const PreviewFigureContainer = styled.div`
+  background-color: #7C7C7C;
 `;

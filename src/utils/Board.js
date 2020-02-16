@@ -9,7 +9,7 @@ export function generateInitCells() {
   return cells;
 }
 
-export function isCanPlaceOnBoard(cells, figure, padX, padY) {
+export function isCanPlaceOnBoard(cells, figure, padX, padY, player) {
   const getCellSafety = (x, y) => {
     if (x < 0 || x > cells.length - 1 || y < 0 || y > cells[0].length) {
       return null;
@@ -17,38 +17,62 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY) {
     return cells[x][y];
   }
 
-  if (padX + figure.bounds.min.x < 0 || padX + figure.bounds.max.x > BOARD_SIZE - 1) {
-    return false;
-  }
-  if (padY + figure.bounds.min.y < 0 || padY + figure.bounds.max.y > BOARD_SIZE - 1) {
-    return false;
-  }
+  // if (padX + figure.bounds.min.x < 0 || padX + figure.bounds.max.x > BOARD_SIZE - 1) {
+  //   return false;
+  // }
+  // if (padY + figure.bounds.min.y < 0 || padY + figure.bounds.max.y > BOARD_SIZE - 1) {
+  //   return false;
+  // }
 
-  let canPlace = true;
-  const mask = figure.mask;
+  const { mask } = figure;
+  // const { score } = player;
 
-  figure.blocks.forEach((block) => {
-    const { x, y } = block;
-
-    if (getCellSafety(padX + x, padY + y) !== '0') {
-      canPlace = false;
+  for (let i = 0; i < figure.blocks.length; i += 1) {
+    const block = figure.blocks[i];
+    const xx = padX + block.x;
+    const yy = padY + block.y;
+    const cellMask = getCellSafety(xx, yy);
+    if (cellMask === '0') {
+      // Can place only on empty cells
+      // if (score === 0 && (
+      //   // If init turn
+      //   (xx === 4 && yy === 4) ||
+      //   (xx === 4 && yy === BOARD_SIZE - 5) ||
+      //   (xx === BOARD_SIZE - 5 && yy === 4) ||
+      //   (xx === BOARD_SIZE - 5 && yy === BOARD_SIZE - 5)
+      // )) {
+      //   blocksValid = true;
+      //   return;
+      // }
+    } else {
+      return false;
     }
-  });
+  }
+
+  for (let i = 0; i < figure.spaces.length; i += 1) {
+    const space = figure.spaces[i];
+    const cellMask = getCellSafety(padX + space.x, padY + space.y);
+    if (cellMask === mask) {
+      // Can't place near to own color
+      return false;
+    }
+  }
 
   let atLeastOnEdgeConnected = false;
 
-  figure.chains.forEach((chain) => {
-    const cell = getCellSafety(padX + chain.x, padY + chain.y);
-    if (cell === mask) {
-      atLeastOnEdgeConnected = true;
-    }
-  });
+  for (let i = 0; i < figure.chains.length; i += 1) {
+    const chain = figure.chains[i];
+    const xx = padX + chain.x;
+    const yy = padY + chain.y;
+    const cellMask = getCellSafety(xx, yy);
 
-  if (!atLeastOnEdgeConnected) {
-    canPlace = false;
+    if (cellMask === mask) {
+      atLeastOnEdgeConnected = true;
+      break;
+    }
   }
 
-  return canPlace;
+  return atLeastOnEdgeConnected;
 }
 
 export default null;

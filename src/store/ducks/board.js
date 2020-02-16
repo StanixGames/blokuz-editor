@@ -17,8 +17,7 @@ function patchCells(cells, figure, padX, padY) {
   const newCells = cells.map((row) => row.map(it => it));
 
   figure.blocks.forEach((block) => {
-    const { x, y, mask } = block;
-    newCells[padX + x][padY + y] = mask;
+    newCells[padX + block.x][padY + block.y] = figure.mask;
   });
 
   return newCells;

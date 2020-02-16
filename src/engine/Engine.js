@@ -11,6 +11,8 @@ class Engine {
   rm = null;
   cm = null;
   bm = null;
+  prevXPad = -1;
+  prevYPad = -1;
 
   constructor() {
     this.sm = new StoreManager(this);
@@ -27,6 +29,12 @@ class Engine {
   }
 
   mouseMove = (xPad, yPad) => {
+    if (xPad !== this.prevXPad || yPad !== this.prevYPad) {
+      this.prevXPad = xPad;
+      this.prevYPad = yPad;
+    } else {
+      return;
+    }
     const figure = this.sm.activeFigure;
     const canPlace = this.canPlaceOnBoard(xPad, yPad);
     if (figure) {
@@ -49,13 +57,14 @@ class Engine {
   }
 
   canPlaceOnBoard = (xPad, yPad) => {
+    const player = this.sm.getActivePlayer();
     const figure = this.sm.getActiveFigure();
     const cells = this.sm.getCells();
 
     if (!figure) {
       return false;
     }
-    return isCanPlaceOnBoard(cells, figure, xPad, yPad);
+    return isCanPlaceOnBoard(cells, figure, xPad, yPad, player);
   }
 
   changeActiveFigure = (method) => {

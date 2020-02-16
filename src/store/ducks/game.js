@@ -29,15 +29,16 @@ const initState = {
 function reducer(state = initState, action) {
   switch (action.type) {
     case types.FIGURE_USE: {
+      let score = 0;
       const newFigures = state[action.player].figures.map((figure) => {
-        if (figure.id === action.figureId) {
+        if (figure && figure.id === action.figureId) {
+          score = figure.blocks.length;
           return {
-            bounds: {
-              min: { x: 0, y: 0 },
-              max: { x: 0, y: 0 },
-            },
-            blocks: []
-          }
+            ...figure,
+            blocks: [],
+            spaces: [],
+            chains: [],
+          };
         }
         return figure;
       });
@@ -46,6 +47,7 @@ function reducer(state = initState, action) {
         ...state,
         [action.player]: {
           ...state[action.player],
+          score: state[action.player].score + score,
           figures: newFigures,
         },
       };
@@ -57,6 +59,7 @@ function reducer(state = initState, action) {
           color: action.color,
           name: action.name,
           mask: action.mask,
+          score: 0,
           figures: generateInitFigures(action.mask),
         },
       };

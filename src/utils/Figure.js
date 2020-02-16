@@ -1,7 +1,23 @@
 const FIGURES = [
   {"bn":"-1:-1;1:1","b":"0:-1;0:0;-1:1;0:1;1:1","c":"-1:-2;1:-2;-2:0;2:0;-2:2;2:2","s":"0:-2;-1:-1;1:-1;-1:0;1:0;-2:1;2:1;-1:2;0:2;1:2"},
   {"bn":"-1:0;1:0","b":"-1:0;0:0;1:0","c":"-2:-1;2:-1;-2:1;2:1","s":"-1:-1;0:-1;1:-1;-2:0;2:0;-1:1;0:1;1:1"},
+  {"bn":"-1:-1;1:1","b":"0:-1;0:0;-1:1;0:1;1:1","c":"-1:-2;1:-2;-2:0;2:0;-2:2;2:2","s":"0:-2;-1:-1;1:-1;-1:0;1:0;-2:1;2:1;-1:2;0:2;1:2"},
+  {"bn":"-1:0;1:0","b":"-1:0;0:0;1:0","c":"-2:-1;2:-1;-2:1;2:1","s":"-1:-1;0:-1;1:-1;-2:0;2:0;-1:1;0:1;1:1"},
+  {"bn":"-1:-1;1:1","b":"0:-1;0:0;-1:1;0:1;1:1","c":"-1:-2;1:-2;-2:0;2:0;-2:2;2:2","s":"0:-2;-1:-1;1:-1;-1:0;1:0;-2:1;2:1;-1:2;0:2;1:2"},
+  {"bn":"-1:0;1:0","b":"-1:0;0:0;1:0","c":"-2:-1;2:-1;-2:1;2:1","s":"-1:-1;0:-1;1:-1;-2:0;2:0;-1:1;0:1;1:1"},
+  {"bn":"-1:-1;1:1","b":"0:-1;0:0;-1:1;0:1;1:1","c":"-1:-2;1:-2;-2:0;2:0;-2:2;2:2","s":"0:-2;-1:-1;1:-1;-1:0;1:0;-2:1;2:1;-1:2;0:2;1:2"},
+  {"bn":"-1:0;1:0","b":"-1:0;0:0;1:0","c":"-2:-1;2:-1;-2:1;2:1","s":"-1:-1;0:-1;1:-1;-2:0;2:0;-1:1;0:1;1:1"},
 ];
+
+function idGenerator() {
+  let id = 0;
+  return () => {
+    id += 1;
+    return id;
+  }
+}
+
+const getNextId = idGenerator();
 
 export function generateFigureFromMatrix(matrix, centerX, centerY) {
   const blocks = [];
@@ -97,7 +113,7 @@ export function generateInitFigures(playerFigureMask) {
     const bounds = parseBounds(figure.bn);
 
     return {
-      id: Math.random(),
+      id: getNextId(),
       mask: playerFigureMask,
       blocks,
       bounds,
@@ -135,26 +151,30 @@ export function rotate(figure) {
 }
 
 export function flipX(figure) {
-  const blocks = figure.blocks.map((block) => ({
-    ...block,
-    x: -1 * block.x,
+  const flipCoords = (coords) => coords.map((coord) => ({
+    x: coord.x * -1,
+    y: coord.y,
   }));
 
   return {
     ...figure,
-    blocks,
+    blocks: flipCoords(figure.blocks),
+    chains: flipCoords(figure.chains),
+    spaces: flipCoords(figure.spaces),
   };
 }
 
 export function flipY(figure) {
-  const blocks = figure.blocks.map((block) => ({
-    ...block,
-    y: -1 * block.y,
+  const flipCoords = (coords) => coords.map((coord) => ({
+    x: coord.x,
+    y: coord.y * -1,
   }));
 
   return {
     ...figure,
-    blocks,
+    blocks: flipCoords(figure.blocks),
+    chains: flipCoords(figure.chains),
+    spaces: flipCoords(figure.spaces),
   };
 }
 

@@ -51,7 +51,7 @@ export default GameScreen;
 const Wrapper = styled.div`
   display: flex;
   flex: 1;
-  background-color: #1b6152;
+  background-color: #424242;
   flex-direction: row;
   justify-content: center;
   align-items: stretch;

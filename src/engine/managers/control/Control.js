@@ -31,7 +31,7 @@ class ControlManager {
     this.engine.mouseMove(this.xPad, this.yPad);
   }
 
-  mouseDown = (event) => {
+  mouseDown = () => {
     this.engine.mouseDown(this.xPad, this.yPad);
   }
   

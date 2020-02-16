@@ -82,11 +82,10 @@ class StoreManager {
   playerUseFigure = () => {
     const state = store.getState();
     const { turn, activeFigure } = state.game;
-    console.log(state.game);
+
     if (!turn || !activeFigure) {
       return;
     }
-    const player = state.game[turn];
     const figureId = activeFigure.id;
     store.dispatch(game.actions.useFigure(turn, figureId));
   }
@@ -99,6 +98,12 @@ class StoreManager {
   getActiveFigure = () => {
     const { activeFigure } = store.getState().game;
     return activeFigure;
+  }
+
+  getActivePlayer = () => {
+    const game = store.getState().game;
+    const player = game[game.turn];
+    return player;
   }
 
   getPlayers = () => {
