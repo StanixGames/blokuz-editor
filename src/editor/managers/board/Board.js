@@ -13,6 +13,11 @@ class BoardManager {
     this.cells = this.generateInitCells();
   }
 
+  clearCells = () => {
+    this.cells = this.generateInitCells();
+    return this.cells;
+  }
+
   generateInitCells = () => {
     const size = this.editor.BOARD_CELLS;
     const blockMask = this.editor.BLOCK_TYPE_NOTHING;

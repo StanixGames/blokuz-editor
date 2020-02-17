@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import editor from '../../editor';
 import Instrument from './components/Instrument';
+import FigureControlButton from '../../UI/FigureControlButton';
 
 export default function EditorScreen() {
   const [ mode, setMode ] = useState(null);
@@ -39,6 +40,20 @@ export default function EditorScreen() {
     () => setEditMode(editor.MODE_CLEAR),
     [ setMode ]
   );
+  const copyJSONHandler = useCallback(
+    () => {
+      const outputElem = document.getElementById("figure-output");
+      outputElem.select();
+      outputElem.setSelectionRange(0, 99999); /*For mobile devices*/
+      document.execCommand("copy");
+      alert('Copied Figure JSOn to clipboard.');
+    },
+    []
+  );
+  const clearJSONHandler = useCallback(
+    () => editor.clearCanvas(),
+    [ editor ]
+  );
 
   return (
     <Wrapper>
@@ -71,7 +86,15 @@ export default function EditorScreen() {
         <Section>
           <TitleLabel>Figure output</TitleLabel>
         </Section>
-        <TextArea id="figure-output" />
+        <TextArea id="figure-output" readOnly />
+        <ActionButtonsContainer>
+          <FigureControlButton onClick={copyJSONHandler}>
+            Copy
+          </FigureControlButton>
+          <FigureControlButton onClick={clearJSONHandler}>
+            Clear
+          </FigureControlButton>
+        </ActionButtonsContainer>
       </LeftPanel>
       <BoardPanel id="board" />
     </Wrapper>
@@ -89,10 +112,12 @@ const Wrapper = styled.div`
 
 const LeftPanel = styled.div`
   display: flex;
-  flex: 1;
+  width: 50vw;
   flex-direction: column;
   margin: 4px;
   max-width: 500px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
 const BoardPanel = styled.div`
@@ -129,11 +154,21 @@ const InstrumentsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const TextArea = styled.div`
+const TextArea = styled.textarea`
   background-color: rgba(255,255,255,0.2);
-  margin: 20px;
   padding: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
   border: none;
   overflow: scroll;
-  max-height: 50vh;
+  resize: none;
+  height: 30vh;
+`;
+
+const ActionButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 5px;
+  padding-top: 10px;
 `;

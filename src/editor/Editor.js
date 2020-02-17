@@ -70,10 +70,12 @@ class Engine {
     this.mode = this.MODE_SPACE;
   }
 
-  // generateInitCells = () => {
-  //   console.log('generate call')
-  //   return this.bm.generateInitCells(this.BOARD_CELLS);
-  // }
+  clearCanvas = () => {
+    const nextCells = this.bm.clearCells();
+    this.rm.renderFigure(nextCells);
+    const textareaElem = document.getElementById('figure-output');
+    textareaElem.innerText = '';
+  }
 
   destroy = () => {
     this.cm.destroy();
