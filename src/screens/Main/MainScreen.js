@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
+import BackgroundGrid from '../../components/BackgroundGrid';
 import ActionButton from '../../UI/ActionButton';
 
 export default function MainScreen() {
@@ -15,22 +16,27 @@ export default function MainScreen() {
   );
 
   return (
-    <Wrapper>
-      <LogoLabel>BlokuZ</LogoLabel>
-      <ActionButton onClick={startGameHandler}>
-        Start Game
-      </ActionButton>
-      <ActionButton onClick={editorHandler}>
-        Editor
-      </ActionButton>
-    </Wrapper>
+    <BackgroundGrid>
+      <Wrapper>
+        <LogoLabel>BlokuZ</LogoLabel>
+        <ActionButton onClick={startGameHandler}>
+          Start Game
+        </ActionButton>
+        <ActionButton onClick={editorHandler}>
+          Editor
+        </ActionButton>
+      </Wrapper>
+    </BackgroundGrid>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-  flex: 1;
-  background-color: #1b6152;
+  max-width: 400px;
+  max-height: 500px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.1);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -39,6 +45,6 @@ const Wrapper = styled.div`
 const LogoLabel = styled.div`
   font-family: 'Anton', sans-serif;
   font-size: 102px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(0,0,0,0.3);
   margin-bottom: 50px;
 `;
