@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import editor from '../../editor';
 import Instrument from './components/Instrument';

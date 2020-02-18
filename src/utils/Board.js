@@ -17,15 +17,7 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY, player) {
     return cells[x][y];
   }
 
-  // if (padX + figure.bounds.min.x < 0 || padX + figure.bounds.max.x > BOARD_SIZE - 1) {
-  //   return false;
-  // }
-  // if (padY + figure.bounds.min.y < 0 || padY + figure.bounds.max.y > BOARD_SIZE - 1) {
-  //   return false;
-  // }
-
   const { mask } = figure;
-  // const { score } = player;
 
   for (let i = 0; i < figure.blocks.length; i += 1) {
     const block = figure.blocks[i];
@@ -33,17 +25,7 @@ export function isCanPlaceOnBoard(cells, figure, padX, padY, player) {
     const yy = padY + block.y;
     const cellMask = getCellSafety(xx, yy);
     if (cellMask === '0') {
-      // Can place only on empty cells
-      // if (score === 0 && (
-      //   // If init turn
-      //   (xx === 4 && yy === 4) ||
-      //   (xx === 4 && yy === BOARD_SIZE - 5) ||
-      //   (xx === BOARD_SIZE - 5 && yy === 4) ||
-      //   (xx === BOARD_SIZE - 5 && yy === BOARD_SIZE - 5)
-      // )) {
-      //   blocksValid = true;
-      //   return;
-      // }
+      // TODO
     } else {
       return false;
     }

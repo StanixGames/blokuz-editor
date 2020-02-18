@@ -22,26 +22,13 @@ class BoardManager {
     const size = this.editor.BOARD_CELLS;
     const blockMask = this.editor.BLOCK_TYPE_NOTHING;
     return new Array(size)
-      .fill(
-        blockMask,
-        // id: Math.random(), // TODO: change it
-      )
+      .fill(blockMask)
       .map(() =>
-        new Array(size).fill(
-          blockMask,
-          // id: Math.random() // TODO: change it
-        )
+        new Array(size).fill(blockMask)
       );
   }
 
-  // setCellsState = (cellsState) => {
-  //   const [ cells, setCells ] = cellsState;
-  //   this.cells = cells;
-  //   this.setCells = setCells;
-  // }
-
-  placeBlock = (xPad, yPad, mode, meta) => {
-    // console.log(this.cells, this.setCells);
+  placeBlock = (xPad, yPad, mode) => {
     if (!this.cells
       || xPad < 0 
       || yPad < 0 
@@ -55,18 +42,12 @@ class BoardManager {
 
     if (mode === this.editor.MODE_DRAW) {
       nextCells[xPad][yPad] = this.editor.BLOCK_TYPE_BODY;
-      //   mask: ,
-      //   // id: nextCells[xPad][yPad].id,
-      // };
     } else if (mode === this.editor.MODE_CHAIN) {
       nextCells[xPad][yPad] = this.editor.BLOCK_TYPE_CHAIN;
-      //   // meta,
-      // }
     } else if (mode === this.editor.MODE_SPACE) {
       nextCells[xPad][yPad] = this.editor.BLOCK_TYPE_SPACE;
     } else if (mode === this.editor.MODE_CLEAR) {
       nextCells[xPad][yPad] = this.editor.BLOCK_TYPE_NOTHING;
-      // };
     }
     this.cells = nextCells;
     return this.cells;

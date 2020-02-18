@@ -31,7 +31,7 @@ class ControlManager {
     this.editor.mouseMove(this.xPad, this.yPad);
   }
 
-  mouseDown = (event) => {
+  mouseDown = () => {
     this.editor.mouseDown(this.xPad, this.yPad);
   }
   
