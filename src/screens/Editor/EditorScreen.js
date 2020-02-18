@@ -63,24 +63,32 @@ export default function EditorScreen() {
         </Section>
         <InstrumentsContainer>
           <Instrument
+            id="instrument-draw"
             color="blue"
             onClick={startDrawModeHandler}
             selected={mode === editor.MODE_DRAW}
+            tooltipText="Draw blocks"
           />
           <Instrument
+            id="instrument-chain"
             color="rgba(0,255,0,0.4)"
             onClick={startChainModeHandler}
             selected={mode === editor.MODE_CHAIN}
+            tooltipText="Draw chains"
           />
           <Instrument
+            id="instrument-space"
             color="rgba(255,0,0,0.4)"
             onClick={startSpaceModeHandler}
             selected={mode === editor.MODE_SPACE}
+            tooltipText="Draw space"
           />
           <Instrument
+            id="instrument-erase"
             color="rgba(255,255,255,0.8)"
             onClick={startClearModeHandler}
             selected={mode === editor.MODE_CLEAR}
+            tooltipText="Remove blocks"
           />
         </InstrumentsContainer>
         <Section>
@@ -88,10 +96,18 @@ export default function EditorScreen() {
         </Section>
         <TextArea id="figure-output" readOnly />
         <ActionButtonsContainer>
-          <FigureControlButton onClick={copyJSONHandler}>
+          <FigureControlButton
+            id="control-button-copy"
+            onClick={copyJSONHandler}
+            tooltipText="Copy figure as JSON"
+          >
             Copy
           </FigureControlButton>
-          <FigureControlButton onClick={clearJSONHandler}>
+          <FigureControlButton
+            id="control-button-clear"
+            onClick={clearJSONHandler}
+            tooltipText="Clear blocks"
+          >
             Clear
           </FigureControlButton>
         </ActionButtonsContainer>

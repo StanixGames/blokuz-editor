@@ -1,6 +1,30 @@
+import React from 'react';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 
-const ActionButton = styled.div`
+export default function FigureControlButton(props) {
+  const { id, tooltipText, ...rest } = props;
+  return (
+    <>
+      {tooltipText && (
+        <ReactTooltip
+          id={id}
+          place="top"
+          effect="solid"
+        >
+        {tooltipText}
+       </ReactTooltip>
+      )}
+      <Button
+        data-tip
+        data-for={id}
+        {...rest}
+      />
+    </>
+  );
+}
+
+const Button = styled.div`
   font-family: 'Roboto', sans-serif;
   display: flex;
   flex: 1;
@@ -21,6 +45,3 @@ const ActionButton = styled.div`
   }
   margin: 10px 4px;
 `;
-
-export default ActionButton;
-

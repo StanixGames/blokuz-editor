@@ -1,6 +1,30 @@
+import React from 'react';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 
-const Instrument = styled.button`
+export default function Instrument(props) {
+  const { id, color, onClick, selected, tooltipText } = props;
+  return (
+    <>
+      <ReactTooltip
+        id={id}
+        place="bottom"
+        effect="solid"
+      >
+        {tooltipText}
+      </ReactTooltip>
+      <Button
+        data-tip
+        data-for={id}
+        color={color}
+        onClick={onClick}
+        selected={selected}
+      />
+    </>
+  );
+}
+
+const Button = styled.button`
   font-family: 'Roboto', sans-serif;
   display: flex;
   flex: 1;
@@ -24,6 +48,3 @@ const Instrument = styled.button`
   border: ${({ selected }) => selected ? '3px solid yellow' : '1px solid grey'};
   outline: none;
 `;
-
-export default Instrument;
-
