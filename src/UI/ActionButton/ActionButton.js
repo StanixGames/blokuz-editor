@@ -10,7 +10,7 @@ const ActionButton = styled.div`
   min-height: 60px;
   max-height: 60px;
   border-radius: 30px;
-  background-color: #0e3859;
+  background-color: #1f5078;
   justify-content: center;
   align-items: center;
   transition: 0.2s;

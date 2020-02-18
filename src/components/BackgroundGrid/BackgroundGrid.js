@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
-function renderGrid(wrapperId) {
-  const wrapperElem = document.getElementById(wrapperId);
+function createCanvas(newElemId, width, height) {
   const canvasElem = document.createElement('canvas');
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  canvasElem.id = `${wrapperId}-canvas`;
+  canvasElem.id = newElemId;
   canvasElem.width = width;
   canvasElem.height = height;
   canvasElem.style.width = `${width}px`;
@@ -14,7 +11,19 @@ function renderGrid(wrapperId) {
   canvasElem.style.position = 'absolute';
   canvasElem.style.left = '0px';
   canvasElem.style.top = '0px';
+
+  return canvasElem;
+}
+
+function renderGrid(wrapperId) {
+  const wrapperElem = document.getElementById(wrapperId);
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const canvasElem = createCanvas(`${wrapperId}-canvas`, width, height);
   wrapperElem.appendChild(canvasElem);
+  const blocksElem = createCanvas(`${wrapperId}-blocks`, width, height);
+  blocksElem.style.opacity = '0.1';
+  wrapperElem.appendChild(blocksElem);
 
   const gridCtx = canvasElem.getContext("2d");
   const cellSize = 50;
@@ -35,11 +44,53 @@ function renderGrid(wrapperId) {
   gridCtx.stroke();
 }
 
+let modeCounter = 0;
+
+function putRandomBlocks(wrapperId) {
+  const canvasElem = document.getElementById(`${wrapperId}-blocks`);
+  const ctx = canvasElem.getContext("2d");
+  const cellSize = 50;
+  const maxXPad = Math.ceil(canvasElem.width / cellSize);
+  const maxYPad = Math.ceil(canvasElem.height / cellSize);
+
+  let counter = 0;
+  let method = 'fillRect';
+  if (modeCounter > 5) {
+    method = 'clearRect';
+    if (modeCounter > 10) {
+      modeCounter = 0;
+    }
+  }
+  while (counter < 50) {
+    const xPad = Math.floor(Math.random() * maxXPad);
+    const yPad = Math.floor(Math.random() * maxYPad);
+    const color = Math.random() > 0.5 ? 'red' : 'blue';
+    const xReal = xPad * cellSize;
+    const yReal = yPad * cellSize;
+    ctx.fillStyle = color;
+    ctx[method](xReal, yReal, cellSize, cellSize);
+
+    counter += 1;
+  }
+
+  modeCounter += 1;
+}
+
 export default function BackgroundGrid({ children }) {
   const wrapperId = 'bg-grid';
 
   useEffect(
-    () => renderGrid(wrapperId),
+    () => {
+      renderGrid(wrapperId);
+      const drawer = setInterval(
+        () => putRandomBlocks(wrapperId),
+        1000
+      );
+      
+      return () => {
+        clearInterval(drawer);
+      }
+    },
     []
   );
   return (
